@@ -1,0 +1,19 @@
+{
+  "info": {"name": "PulseNotify API", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
+  "variable": [{"key": "baseUrl", "value": "http://localhost:8000"}, {"key": "token", "value": ""}],
+  "item": [
+    {"name": "Register", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "url": "{{baseUrl}}/api/auth/register/", "body": {"mode": "raw", "raw": "{\n  \"username\": \"alice\",\n  \"password\": \"securepass\",\n  \"email\": \"alice@example.com\"\n}"}}},
+    {"name": "Login", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "url": "{{baseUrl}}/api/auth/login/", "body": {"mode": "raw", "raw": "{\"username\": \"alice\", \"password\": \"securepass\"}"}}},
+    {"name": "Create alert", "request": {"method": "POST", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}, {"key": "Content-Type", "value": "application/json"}], "url": "{{baseUrl}}/api/alerts/", "body": {"mode": "raw", "raw": "{\"origin\": \"DEL\", \"destination\": \"BOM\", \"threshold_price\": 4500}"}}},
+    {"name": "List alerts", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}], "url": "{{baseUrl}}/api/alerts/"}},
+    {"name": "Deactivate alert", "request": {"method": "DELETE", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}], "url": "{{baseUrl}}/api/alerts/1/"}},
+    {"name": "Mock price", "request": {"method": "GET", "url": "{{baseUrl}}/api/flights/price/?route=DEL-BOM"}},
+    {"name": "Admin summary", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}], "url": "{{baseUrl}}/api/admin/summary/"}},
+    {"name": "Register duplicate username (400)", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "url": "{{baseUrl}}/api/auth/register/", "body": {"mode": "raw", "raw": "{\"username\": \"alice\", \"password\": \"securepass\"}"}}},
+    {"name": "Login invalid credentials (401)", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "url": "{{baseUrl}}/api/auth/login/", "body": {"mode": "raw", "raw": "{\"username\": \"alice\", \"password\": \"wrongpass\"}"}}},
+    {"name": "Other user alert is hidden (404)", "request": {"method": "DELETE", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}], "url": "{{baseUrl}}/api/alerts/999/"}},
+    {"name": "Unknown route (404)", "request": {"method": "GET", "url": "{{baseUrl}}/api/flights/price/?route=XXX-YYY"}},
+    {"name": "User admin summary forbidden (403)", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}], "url": "{{baseUrl}}/api/admin/summary/"}},
+    {"name": "Admin summary success (200)", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{token}}"}], "url": "{{baseUrl}}/api/admin/summary/"}}
+  ]
+}
